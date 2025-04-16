@@ -1,0 +1,60 @@
+import json
+import os
+
+FILE_NAME = "library.json"
+
+# Load or initialize the library
+def load_library():
+    if os.path.exists(FILE_NAME):
+        with open(FILE_NAME, 'r') as f:
+            return json.load(f)
+    return []
+
+def save_library(library):
+    with open(FILE_NAME, 'w') as f:
+        json.dump(library, f, indent=4)
+
+def add_book(library):
+    book = {
+        "title": input("Book Title: "),
+        "author": input("Author: "),
+        "genre": input("Genre: "),
+        "status": input("Status (read/unread/reading): "),
+        "rating": input("Rating (1-5): "),
+        "notes": input("Any notes: ")
+    }
+    library.append(book)
+    print("✅ Book added successfully!")
+
+def view_books(library):
+    if not library:
+        print("No books in your library yet.")
+        return
+    for i, book in enumerate(library, 1):
+        print(f"\n📖 Book {i}")
+        for key, value in book.items():
+            print(f"{key.capitalize()}: {value}")
+
+def main():
+    library = load_library()
+    while True:
+        print("\n📚 Personal Library Manager")
+        print("1. Add Book")
+        print("2. View Books")
+        print("3. Exit")
+
+        choice = input("Choose an option: ")
+        if choice == '1':
+            add_book(library)
+            save_library(library)
+        elif choice == '2':
+            view_books(library)
+        elif choice == '3':
+            save_library(library)
+            print("Goodbye! 📘")
+            break
+        else:
+            print("Invalid choice. Try again!")
+
+if __name__ == "__main__":
+    main()
